@@ -12,6 +12,25 @@ module.exports = {
     publicPath: '/dist/',
     filename: 'build.js'
   },
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+	  cacheGroups: {
+                core: {
+                    test: /[\\/]node_modules[\\/](core-js|regenerator-runtime|scheduler|object-assign|@babel)[\\/]/,
+                    name: "vendor~core",
+                    chunks: "all",
+                    enforce: true
+                },
+                vue: {
+                    test: /[\\/]node_modules[\\/](vue|vue-class-component)[\\/]/,
+                    name: "vendor~vue",
+                    chunks: "all",
+                    enforce: true
+                },
+	  },		
+    },
+  },
   plugins:[
     new VueLoaderPlugin()
   ],
@@ -53,7 +72,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.ts', '.vue', '.js', '.json'],
+    extensions: ['.ts', '.tsx', '.vue', '.js', '.json'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js'
     }
@@ -84,7 +103,7 @@ if (process.env.NODE_ENV === 'production') {
       }
     }),
     new webpack.LoaderOptionsPlugin({
-      minimize: true
+      minimize: false
     })
   ])
 }
